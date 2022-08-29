@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itCar.base.api.log.mapper.LogMapper">
+
+    <insert id="add" parameterType="com.itCar.base.api.log.entity.MyLog">
+        insert into MY_LOG
+        (id, user_name, ip, description, params, execution_time, method, type, moduleName, doInterfacePath, exception_detail)
+        values
+        (
+            #{id, jdbcType=VARCHAR},
+            #{userName, jdbcType=VARCHAR},
+            #{ip, jdbcType=VARCHAR},
+            #{description, jdbcType=VARCHAR},
+            #{params, jdbcType=VARCHAR},
+            #{executionTime, jdbcType=VARCHAR},
+            #{method, jdbcType=VARCHAR},
+            #{type, jdbcType=VARCHAR},
+            #{moduleName, jdbcType=VARCHAR},
+            #{doInterfacePath, jdbcType=VARCHAR},
+            #{exceptionDetail, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="logList" resultType="com.itCar.base.api.log.entity.MyLog">
+        SELECT 	ID, USER_NAME, IP, DESCRIPTION, PARAMS, EXECUTION_TIME, METHOD, TYPE, MODULENAME, DOINTERFACEPATH, CREATE_TIME, EXCEPTION_DETAIL
+        FROM
+            QUARTZ.MY_LOG
+        WHERE 1=1
+        <if test="logType != null and logType != ''">
+            AND type = #{logType}
+        </if>
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+    <delete id="delLog">
+        DELETE FROM QUARTZ.MY_LOG WHERE 1=1
+        <if test="logType != null and logType != ''">
+            AND TYPE = #{logType}
+        </if>
+        <if test="id != null and id != ''">
+            AND id = #{id}
+        </if>
+    </delete>
+
+</mapper>
+ 

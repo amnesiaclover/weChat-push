@@ -1,0 +1,100 @@
+##### 公共 配置 #######
+
+# 内置Tomcat容器配置
+server:
+  port: 8085
+  servlet:
+    #应用路径，配置应用路径，可方便进行反向代理
+    context-path: /basicManageSys
+
+# swagger接口文档显示配置
+swagger:
+  enabled: true
+
+# 基础配置
+spring:
+  profiles:
+    active: ${BASE_ADMIN:dev} # 选择配置分支，先读取系统环境变量，如果没有则默认值为 dev
+
+  #mvc 接收参数时对日期进行格式化
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  # jackson对响应回去的日期参数进行格式化
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+# Mybatis-plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true # 驼峰命名法
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # xml
+  mapper-locations: classpath:mapper/*/*Mapper.xml
+  # 实体扫描，多个package用逗号或者分号分隔
+#  type-aliases-package: com.citygis.hpalarmsys.openApi.*.entity
+  type-aliases-package: com.itCar.base.api.**
+
+# 邮箱配置
+config:
+  # 发送邮件配置
+  email:
+    # 设置协议主机
+    host: mail.host
+    com: smtp.163.com
+    # 设置smtp是否需要认证
+    stmp: mail.smtp.auth
+    isItCertified: true
+    # 设置发件人
+    sender: xxx@163.com
+    # 用户登录的授权码
+    authorizationCode: QEEVWTBUQQVRJMNU
+
+# 微信推送配置
+#去申请 https://mp.weixin.qq.com/debug/cgi-bin/sandbox?t=sandbox/login
+wx:
+  config:
+    appId: "wx148e4e32f56a200e"
+    appSecret: "4a1ebdbfaec3aee2cf1f6931b4630662"
+    #模板Id
+    templateId: "nfe1ADy6SrZE6GsgsQfOVOv2-kGYwDSKGsdwrKjiYWs" # LcUuNjsV4LcjcOi5eGYnepoEkKRHwuaIbEWCW6lO0j0   nfe1ADy6SrZE6GsgsQfOVOv2-kGYwDSKGsdwrKjiYWs
+    openid: "oCagm6KvnAL8F43CwoIa5ty1OyXw,oCagm6Kgl6i54kpUrAz5Psh3URJM" # oCagm6KvnAL8F43CwoIa5ty1OyXw,oCagm6Kgl6i54kpUrAz5Psh3URJM    oCagm6HQboT4zxPXmlSdY3ayzfow
+
+message:
+  config:
+    birthday: "02-09" #生日日期
+    togetherDate: "2020-12-24" #填你们在一起的那天日期
+    message: "Have a happy day and love you"
+
+#去申请 https://tianqiapi.com/user/login
+weather:
+  config:
+    appid: "23636437"
+    appSecret: "YNxMysc6"
+
+---
+##### dev 配置 #######
+spring:
+  profiles: dev
+
+  # 数据库配置
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://localhost:3306/quartz?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    driver-class-name: com.mysql.jdbc.Driver
+
+---
+##### prod 配置 #######
+spring:
+  profiles: prod
+
+  # 数据库配置
+  atasource:
+    username:
+    password:
+    url: jdbc:oracle:thin:@127.0.0.1/orcl
+    driver-class-name: oracle.jdbc.OracleDriver
+

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 引入 pageHelper插件 -->
+    <!--注意这里要写成PageInterceptor, 5.0之前的版本都是写PageHelper, 5.0之后要换成PageInterceptor-->
+    <settings>
+        <!--解决，查询返回结果含null没有对应字段值问题-->
+        <setting name="callSettersOnNulls" value="true"/>
+        <!-- changes from the defaults  延迟加载 -->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <setting name="logImpl" value="LOG4J2"/>
+    </settings>
+    <typeAliases>
+        <!--这里给实体类取别名，方便在mapper配置文件中使用-->
+        <package name="com.itCar.base.api"/>
+    </typeAliases>
+    <plugins>
+        <plugin interceptor="com.github.pagehelper.PageInterceptor">
+            <!--reasonable：分页合理化参数，默认值为false,直接根据参数进行查询。
+              当该参数设置为 true 时，pageNum<=0 时会查询第一页， pageNum>pages（超过总数时），会查询最后一页。-->
+            <property name="dialect" value="oracle"/>
+            <property name="reasonable" value="true"/>
+        </plugin>
+    </plugins>
+
+</configuration>

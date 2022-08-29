@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itCar.base.api.quartz.mapper.JobMapper">
+
+    <select id="getQuartzJobList" resultType="com.itCar.base.api.quartz.entity.QuartzEntity">
+        SELECT job.JOB_NAME as jobName,job.JOB_GROUP as jobGroup,job.DESCRIPTION as description,job.JOB_CLASS_NAME as jobClassName,
+               cron.CRON_EXPRESSION as cronExpression,tri.TRIGGER_NAME as triggerName,tri.TRIGGER_STATE as triggerState,
+               job.JOB_NAME as oldJobName,job.JOB_GROUP as oldJobGroup
+        FROM qrtz_job_details job
+                 LEFT JOIN qrtz_triggers tri ON job.JOB_NAME = tri.JOB_NAME  AND job.JOB_GROUP = tri.JOB_GROUP
+                 LEFT JOIN qrtz_cron_triggers cron ON cron.TRIGGER_NAME = tri.TRIGGER_NAME AND cron.TRIGGER_GROUP= tri.JOB_GROUP
+        WHERE tri.TRIGGER_TYPE = 'CRON'
+        <if test="name != null and name != ''">
+            AND job.JOB_NAME = #{name}
+        </if>
+    </select>
+
+</mapper>
+ 
